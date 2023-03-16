@@ -42,3 +42,17 @@ def search(request):
             "subList": subList,
         })
 
+
+def toAdd(request):
+    return render(request, "encyclopedia/add.html")
+
+
+def add(request):
+    title = request.POST.get('title')
+    content = request.POST.get('textBody')
+    util.save_entry(title, content)
+
+    return render(request, "encyclopedia/entry.html", {
+        "title": title,
+        "entry": content,
+    })
