@@ -19,3 +19,26 @@ def entry(request, name):
             "title": name,
             "entry": util.get_entry(name)
     })
+
+
+
+def search(request):
+    query = request.GET.get('q')
+    lst = util.list_entries()
+
+    if query in lst:
+
+        return render(request, 'encyclopedia/entry.html', {
+            "title": query,
+            "entry": util.get_entry(query) 
+        })
+    else:
+        subList = []
+        for entry in lst:
+            if query in entry:
+                subList.append(entry)
+        return render(request, "encyclopedia/search_sub.html", {
+            "query": query,
+            "subList": subList,
+        })
+
