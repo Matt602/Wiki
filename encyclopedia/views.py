@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from django.http import HttpResponse
 from . import util
+import random
 
 
 def index(request):
@@ -54,5 +55,17 @@ def add(request):
 
     return render(request, "encyclopedia/entry.html", {
         "title": title,
+        "entry": content,
+    })
+
+
+def randomPage(request):
+    lst = util.list_entries()
+    choice = random.choice(lst)
+
+    content = util.get_entry(choice)
+
+    return render(request, "encyclopedia/entry.html", {
+        "title": choice,
         "entry": content,
     })
