@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from . import util
 import random
-
+import markdown2
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -18,7 +18,7 @@ def entry(request, name):
 
         return render(request, "encyclopedia/entry.html", {
             "title": name,
-            "entry": util.get_entry(name)
+            "entry": markdown2.markdown(util.get_entry(name)),
     })
 
 
@@ -31,7 +31,7 @@ def search(request):
 
         return render(request, 'encyclopedia/entry.html', {
             "title": query,
-            "entry": util.get_entry(query) 
+            "entry": markdown2.markdown(util.get_entry(query)), 
         })
     else:
         subList = []
@@ -55,7 +55,7 @@ def add(request):
 
     return render(request, "encyclopedia/entry.html", {
         "title": title,
-        "entry": content,
+        "entry": markdown2.markdown(content),
     })
 
 
@@ -67,5 +67,5 @@ def randomPage(request):
 
     return render(request, "encyclopedia/entry.html", {
         "title": choice,
-        "entry": content,
+        "entry": markdown2.markdown(content),
     })
