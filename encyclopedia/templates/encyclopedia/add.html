@@ -7,16 +7,20 @@
 {% block body %}
     <h1>Add New Entry</h1>
 
+    {% if exists %}
+        <h2 style="color: red">Entry already exists</h2>
+    {% endif %}
+
     <form method="post" action="{% url 'encyclopedia:add' %}">
 
         {% csrf_token %}
 
 
         <div>
-            <input class="form-group" name="title" placeholder="Entry Title" required>
+            <input class="form-group" name="title" placeholder="Entry Title" value="{{ title }}" required>
         </div>
         <div>
-            <textarea class="form-group"  name="textBody" placeholder="Content of Entry" required></textarea>
+            <textarea class="form-group"  name="textBody" placeholder="Content of Entry" required>{{ entry }}</textarea>
         </div>
         <button type="submit">Create entry</button>
     </form>

@@ -45,14 +45,28 @@ def search(request):
 
 
 def toAdd(request):
-    return render(request, "encyclopedia/add.html")
+    return render(request, "encyclopedia/add.html", {
+        "exists": False,
+        "title": "",
+        "entry": "",
+    })
 
 
 def add(request):
     title = request.POST.get('title')
     content = request.POST.get('textBody')
-    util.save_entry(title, content)
 
+    lst = util.list_entries()
+
+    if title in lst:
+        return render(request, "encyclopedia/add.html", {
+            "exists": True,
+            "title": title,
+            "entry": content
+
+        })
+    
+    util.save_entry(title, content)
     return render(request, "encyclopedia/entry.html", {
         "title": title,
         "entry": markdown2.markdown(content),
