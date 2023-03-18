@@ -12,7 +12,7 @@ def index(request):
 
 def entry(request, name):
     if name not in util.list_entries():
-        return HttpResponse("Requested page does not exist")
+        return HttpResponse("Requested page does not exist.")
 
     else:
 
@@ -68,4 +68,28 @@ def randomPage(request):
     return render(request, "encyclopedia/entry.html", {
         "title": choice,
         "entry": markdown2.markdown(content),
+    })
+
+
+def toEdit(request, title):
+
+    content = util.get_entry(title)
+    return render(request, "encyclopedia/entry_edit.html", {
+        "title": title,
+        "content": content,
+    })
+
+
+def entry_edit(request):
+    title = request.POST.get('title')
+    content = request.POST.get('textBody')
+    util.save_entry(title, content)
+
+    print(title)
+
+
+
+    return render(request, "encyclopedia/entry.html", {
+        "title": title,
+        "entry": markdown2.markdown(content)
     })
